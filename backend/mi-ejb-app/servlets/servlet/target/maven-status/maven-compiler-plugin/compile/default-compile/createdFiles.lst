@@ -4,4 +4,5 @@ com/booklibrary/exception/RuntimeExceptionMapper.class
 com/booklibrary/exception/EJBExceptionMapper.class
 com/booklibrary/exception/ValidationExceptionMapper.class
 com/booklibrary/exception/GenericExceptionMapper.class
+com/booklibrary/config/CORSFilter.class
 com/booklibrary/exception/NotFoundExceptionMapper.class

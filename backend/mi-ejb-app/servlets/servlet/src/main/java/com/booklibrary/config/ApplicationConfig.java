@@ -8,6 +8,7 @@ import com.booklibrary.exception.NotFoundExceptionMapper;
 import com.booklibrary.exception.GenericExceptionMapper;
 import com.booklibrary.exception.RuntimeExceptionMapper;
 import com.booklibrary.exception.EJBExceptionMapper;
+import com.booklibrary.config.CORSFilter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +29,9 @@ public class ApplicationConfig extends Application {
         resources.add(GenericExceptionMapper.class);
         resources.add(RuntimeExceptionMapper.class);
         resources.add(EJBExceptionMapper.class);
+        
+        // Registrar el filtro CORS
+        resources.add(CORSFilter.class);
         
         return resources;
     }

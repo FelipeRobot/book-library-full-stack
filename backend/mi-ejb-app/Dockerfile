@@ -1,5 +1,5 @@
 # Use WildFly latest as base image
-FROM jboss/wildfly:latest
+FROM quay.io/wildfly/wildfly:latest
 
 # Set environment variables
 ENV JAVA_OPTS="-Xms512m -Xmx1024m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m"
@@ -15,22 +15,13 @@ COPY ear/target/ear-1.0.ear /opt/jboss/wildfly/standalone/deployments/
 # Copy database configuration script
 COPY configure-datasource.cli /opt/jboss/wildfly/bin/
 
-# Copy PostgreSQL driver
-COPY postgresql-42.7.2.jar /opt/jboss/wildfly/standalone/deployments/
+# Copy PostgreSQL driver and create module
+RUN mkdir -p /opt/jboss/wildfly/modules/org/postgresql/main/
+COPY postgresql-42.7.2.jar /opt/jboss/wildfly/modules/org/postgresql/main/
+COPY module.xml /opt/jboss/wildfly/modules/org/postgresql/main/
 
 # Create a script to wait for database and configure datasource
-RUN echo '#!/bin/bash\n\
-echo "Waiting for PostgreSQL to be ready..."\n\
-sleep 10\n\
-echo "PostgreSQL should be ready!"\n\
-\n\
-echo "Configuring datasource..."\n\
-/opt/jboss/wildfly/bin/jboss-cli.sh --connect --file=/opt/jboss/wildfly/bin/configure-datasource.cli\n\
-\n\
-echo "Starting WildFly..."\n\
-exec /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0' > /opt/jboss/wildfly/bin/start.sh
-
-# Make the script executable
+COPY --chown=jboss:root start.sh /opt/jboss/wildfly/bin/
 RUN chmod +x /opt/jboss/wildfly/bin/start.sh
 
 # Expose ports

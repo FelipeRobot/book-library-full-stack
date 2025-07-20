@@ -8,6 +8,66 @@
   </div>
 
   <div class="content">
+    <!-- Formulario de creación de libro -->
+    <div *ngIf="showCreateForm" class="create-form">
+      <h2>Agregar Nuevo Libro</h2>
+      <form (ngSubmit)="onSubmitCreate()" #createForm="ngForm">
+        <div class="form-group">
+          <label for="title">Título</label>
+          <input id="title" name="title" [(ngModel)]="newBook.title" required />
+        </div>
+        <div class="form-group">
+          <label for="author">Autor</label>
+          <input id="author" name="author" [(ngModel)]="newBook.author" required />
+        </div>
+        <div class="form-group">
+          <label for="isbn">ISBN</label>
+          <input id="isbn" name="isbn" [(ngModel)]="newBook.isbn" required />
+        </div>
+        <div class="form-group">
+          <label for="publicationYear">Año de publicación</label>
+          <input id="publicationYear" name="publicationYear" type="number" [(ngModel)]="newBook.publicationYear" />
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit" [disabled]="creating">Guardar</button>
+          <button class="btn btn-secondary" type="button" (click)="onCancelCreate()">Cancelar</button>
+        </div>
+      </form>
+      <div *ngIf="error && !loading" class="error">
+        <p>{{ error }}</p>
+      </div>
+    </div>
+
+    <!-- Formulario de edición de libro -->
+    <div *ngIf="editingBook" class="edit-form">
+      <h2>Editar Libro</h2>
+      <form (ngSubmit)="onSubmitEdit()" #editForm="ngForm">
+        <div class="form-group">
+          <label for="edit-title">Título</label>
+          <input id="edit-title" name="edit-title" [(ngModel)]="editBookData.title" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-author">Autor</label>
+          <input id="edit-author" name="edit-author" [(ngModel)]="editBookData.author" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-isbn">ISBN</label>
+          <input id="edit-isbn" name="edit-isbn" [(ngModel)]="editBookData.isbn" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-publicationYear">Año de publicación</label>
+          <input id="edit-publicationYear" name="edit-publicationYear" type="number" [(ngModel)]="editBookData.publicationYear" />
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit" [disabled]="updating">Guardar Cambios</button>
+          <button class="btn btn-secondary" type="button" (click)="onCancelEdit()">Cancelar</button>
+        </div>
+      </form>
+      <div *ngIf="error && !loading" class="error">
+        <p>{{ error }}</p>
+      </div>
+    </div>
+
     <!-- Loading state -->
     <div *ngIf="loading" class="loading">
       <div class="spinner"></div>
