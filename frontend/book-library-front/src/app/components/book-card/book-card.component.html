@@ -1,0 +1,25 @@
+<div class="book-card">
+  <div class="book-content">
+    <h3 class="book-title">{{ book.title }}</h3>
+    <p class="book-year" *ngIf="book.publicationYear">
+      <strong>Año de publicación:</strong> {{ book.publicationYear }}
+    </p>
+    <div class="book-details">
+      <p class="book-author"><strong>Autor:</strong> {{ book.author }}</p>
+      <p class="book-isbn"><strong>ISBN:</strong> {{ book.isbn }}</p>
+      <p class="book-year" *ngIf="book.publicationYear">
+        <strong>Año:</strong> {{ book.publicationYear }}
+      </p>
+    </div>
+  </div>
+  <div class="book-actions">
+    <button class="btn btn-edit" (click)="onEdit()">
+      <span class="btn-icon">✏️</span>
+      Editar
+    </button>
+    <button class="btn btn-delete" (click)="onDelete()">
+      <span class="btn-icon">🗑️</span>
+      Borrar
+    </button>
+  </div>
+</div> 

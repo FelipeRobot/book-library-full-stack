@@ -1,0 +1,39 @@
+# Script robusto para configurar el datasource de PostgreSQL en WildFly
+# Este script se puede usar tanto para desarrollo como para Docker
+
+# Verificar si el driver existe y agregarlo si no
+try
+    /subsystem=datasources/jdbc-driver=postgresql:read-resource
+catch
+    /subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-class-name=org.postgresql.Driver)
+end-try
+
+# Verificar si el datasource existe y eliminarlo si es necesario
+try
+    /subsystem=datasources/data-source=PostgresDS:remove
+catch
+    # El datasource no existe, continuar
+end-try
+
+# Crear el datasource
+/subsystem=datasources/data-source=PostgresDS:add(
+    jndi-name="java:/PostgresDS",
+    driver-name=postgresql,
+    connection-url="jdbc:postgresql://localhost:5432/book_library",
+    user-name=bookuser,
+    password=bookpass,
+    min-pool-size=5,
+    max-pool-size=20,
+    pool-prefill=true,
+    pool-use-strict-min=false,
+    validate-on-match=true,
+    background-validation=true,
+    background-validation-millis=60000,
+    check-valid-connection-sql="SELECT 1"
+)
+
+# Habilitar el datasource
+/subsystem=datasources/data-source=PostgresDS:enable
+
+# Reload del servidor
+:reload 

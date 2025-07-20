@@ -1,0 +1,5 @@
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/ejbs/src/main/java/com/booklibrary/entity/Book.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/ejbs/src/main/java/com/booklibrary/exception/NotFoundException.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/ejbs/src/main/java/com/controllers/Controller.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/ejbs/src/main/java/com/booklibrary/dao/BookDAO.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/ejbs/src/main/java/com/booklibrary/exception/ValidationException.java

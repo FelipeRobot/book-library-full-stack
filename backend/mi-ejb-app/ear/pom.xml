@@ -1,0 +1,44 @@
+<project>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>com.booklibrary</groupId>
+   <artifactId>ear</artifactId>
+   <packaging>ear</packaging>
+   <version>1.0</version>
+   <name>Book Library EAR</name>
+   <parent>
+      <groupId>com.booklibrary</groupId>
+      <artifactId>book-library-ejb</artifactId>
+      <version>1.0</version>
+   </parent>
+   <dependencies>
+      <dependency>
+         <groupId>com.booklibrary</groupId>
+         <artifactId>ejbs</artifactId>
+         <version>1.0</version>
+         <type>ejb</type>
+      </dependency>
+      <dependency>
+         <groupId>com.booklibrary</groupId>
+         <artifactId>servlet</artifactId>
+         <version>1.0</version>
+         <type>war</type>
+      </dependency>
+   </dependencies>
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-ear-plugin</artifactId>
+            <version>3.3.0</version>
+            <configuration>
+               <applicationName>book-library</applicationName>
+               <archive>
+                  <manifest>
+                     <addClasspath>true</addClasspath>
+                  </manifest>
+               </archive>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+</project>

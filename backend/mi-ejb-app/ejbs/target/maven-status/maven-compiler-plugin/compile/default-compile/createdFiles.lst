@@ -1,0 +1,5 @@
+com/controllers/Controller.class
+com/booklibrary/exception/NotFoundException.class
+com/booklibrary/exception/ValidationException.class
+com/booklibrary/dao/BookDAO.class
+com/booklibrary/entity/Book.class

@@ -1,0 +1,32 @@
+# =====================================================
+# Configuración de Base de Datos - Book Library
+# Copiar este archivo como database.properties y ajustar valores
+# =====================================================
+
+# Configuración PostgreSQL
+db.driver=org.postgresql.Driver
+db.url=jdbc:postgresql://localhost:5432/book_library
+db.username=bookuser
+db.password=bookpass
+
+# Configuración MySQL (alternativa)
+# db.driver=com.mysql.cj.jdbc.Driver
+# db.url=jdbc:mysql://localhost:3306/book_library?useSSL=false&serverTimezone=UTC
+# db.username=bookuser
+# db.password=bookpass
+
+# Configuración del pool de conexiones
+db.initialSize=5
+db.maxActive=20
+db.maxIdle=10
+db.minIdle=5
+db.maxWait=60000
+
+# Configuración JPA/Hibernate
+jpa.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+jpa.hibernate.show_sql=true
+jpa.hibernate.format_sql=true
+jpa.hibernate.hbm2ddl.auto=validate
+
+# Configuración para MySQL
+# jpa.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect 

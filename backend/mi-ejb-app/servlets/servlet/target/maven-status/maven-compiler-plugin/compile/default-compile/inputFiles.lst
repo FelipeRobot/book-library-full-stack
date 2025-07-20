@@ -1,0 +1,7 @@
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/servlets/servlet/src/main/java/com/booklibrary/exception/ValidationExceptionMapper.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/servlets/servlet/src/main/java/com/booklibrary/config/ApplicationConfig.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/servlets/servlet/src/main/java/com/booklibrary/rest/BookResource.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/servlets/servlet/src/main/java/com/booklibrary/exception/RuntimeExceptionMapper.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/servlets/servlet/src/main/java/com/booklibrary/exception/EJBExceptionMapper.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/servlets/servlet/src/main/java/com/booklibrary/exception/NotFoundExceptionMapper.java
+/home/felipe_robot/Documents/book-library-java/backend/mi-ejb-app/servlets/servlet/src/main/java/com/booklibrary/exception/GenericExceptionMapper.java

@@ -1,0 +1,3 @@
+com/booklibrary/exception/ValidationExceptionMapperTest.class
+com/booklibrary/exception/EJBExceptionMapperTest.class
+com/booklibrary/exception/NotFoundExceptionMapperTest.class

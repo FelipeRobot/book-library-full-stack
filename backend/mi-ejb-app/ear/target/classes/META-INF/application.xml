@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="https://jakarta.ee/xml/ns/jakartaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/application_10_0.xsd"
+              version="10">
+    
+    <display-name>Book Library Application</display-name>
+    
+    <module>
+        <ejb>com.booklibrary-ejbs-1.0.jar</ejb>
+    </module>
+    
+    <module>
+        <web>
+            <web-uri>com.booklibrary-servlet-1.0.war</web-uri>
+            <context-root>/booklibrary</context-root>
+        </web>
+    </module>
+    
+</application> 

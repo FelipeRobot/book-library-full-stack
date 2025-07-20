@@ -1,0 +1,149 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database for Production
+  postgres:
+    image: postgres:15-alpine
+    container_name: booklibrary-postgres-prod
+    environment:
+      POSTGRES_DB: booklibrary
+      POSTGRES_USER: ${DB_USER:-booklibrary}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-booklibrary123}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/backups:/backups
+    networks:
+      - booklibrary-network-prod
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-booklibrary} -d booklibrary"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+
+  # WildFly Application Server for Production
+  wildfly:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: booklibrary-wildfly-prod
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: booklibrary
+      DB_USER: ${DB_USER:-booklibrary}
+      DB_PASSWORD: ${DB_PASSWORD:-booklibrary123}
+      JAVA_OPTS: "-Xms1024m -Xmx2048m -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=512m -XX:+UseG1GC -XX:+UseStringDeduplication"
+    networks:
+      - booklibrary-network-prod
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/book-library/api/books"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 120s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+          cpus: '2.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: booklibrary-nginx-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - wildfly
+    networks:
+      - booklibrary-network-prod
+    restart: unless-stopped
+    profiles:
+      - proxy
+
+  # Redis Cache (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: booklibrary-redis-prod
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_prod:/data
+    networks:
+      - booklibrary-network-prod
+    restart: unless-stopped
+    profiles:
+      - cache
+
+  # Elasticsearch for Logging (Optional)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: booklibrary-elasticsearch-prod
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data_prod:/usr/share/elasticsearch/data
+    networks:
+      - booklibrary-network-prod
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+  # Kibana for Log Visualization (Optional)
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: booklibrary-kibana-prod
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - booklibrary-network-prod
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+volumes:
+  postgres_data_prod:
+    driver: local
+  redis_data_prod:
+    driver: local
+  elasticsearch_data_prod:
+    driver: local
+
+networks:
+  booklibrary-network-prod:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16 

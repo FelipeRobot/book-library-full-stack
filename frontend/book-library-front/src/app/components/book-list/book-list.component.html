@@ -1,0 +1,44 @@
+<div class="book-library-container">
+  <div class="header">
+    <h1 class="title">Biblioteca de Libros</h1>
+    <button class="btn btn-primary" (click)="onAddNewBook()">
+      <span class="btn-icon">📚</span>
+      Nuevo Libro
+    </button>
+  </div>
+
+  <div class="content">
+    <!-- Loading state -->
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Cargando libros...</p>
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="error && !loading" class="error">
+      <p>{{ error }}</p>
+      <button class="btn btn-retry" (click)="loadBooks()">Reintentar</button>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!loading && !error && books.length === 0" class="empty-state">
+      <div class="empty-icon">📖</div>
+      <h3>No hay libros disponibles</h3>
+      <p>Comienza agregando tu primer libro a la biblioteca</p>
+      <button class="btn btn-primary" (click)="onAddNewBook()">
+        <span class="btn-icon">➕</span>
+        Agregar Primer Libro
+      </button>
+    </div>
+
+    <!-- Books grid -->
+    <div *ngIf="!loading && !error && books.length > 0" class="books-grid">
+      <app-book-card
+        *ngFor="let book of books"
+        [book]="book"
+        (editBook)="onEditBook($event)"
+        (deleteBook)="onDeleteBook($event)">
+      </app-book-card>
+    </div>
+  </div>
+</div> 
